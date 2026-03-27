@@ -229,6 +229,7 @@ fun MainScreen() {
                             isServiceRunning = true
                         }
                     },
+                    enabled = !isServiceRunning,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
