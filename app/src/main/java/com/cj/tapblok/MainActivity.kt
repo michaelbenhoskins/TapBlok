@@ -265,12 +265,13 @@ fun MainScreen() {
                             onClick = { context.startActivity(Intent(context, AppSelectionActivity::class.java)) }
                         )
                         HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-                        ActionRow(
-                            icon = Icons.Default.Nfc,
-                            label = "Write NFC Tag",
-                            onClick = { context.startActivity(Intent(context, NfcWriteActivity::class.java)) }
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                        // Hiding "Write NFC Tag" action from main UI to prevent users from creating NFC triggers. 
+                        //ActionRow(
+                        //    icon = Icons.Default.Nfc,
+                        //    label = "Write NFC Tag",
+                        //    onClick = { context.startActivity(Intent(context, NfcWriteActivity::class.java)) }
+                        //)
+                        //HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
                         ActionRow(
                             icon = Icons.Default.QrCode2,
                             label = "Show QR Code",
