@@ -84,6 +84,7 @@ fun MainScreen() {
 
     var holdProgress by remember { mutableStateOf(0f) }
     var isHolding by remember { mutableStateOf(false) }
+    var skipNextResume by remember { mutableStateOf(false) }
 
     val settingsLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -101,6 +102,7 @@ fun MainScreen() {
         contract = ScanContract()
     ) { result ->
         if (result.contents == QrCodeActivity.QR_CODE_CONTENT) {
+            skipNextResume = true
             if (isServiceRunning) {
                 context.stopService(Intent(context, AppMonitoringService::class.java))
                 Toast.makeText(context, "Monitoring stopped.", Toast.LENGTH_SHORT).show()
@@ -120,7 +122,11 @@ fun MainScreen() {
             if (event == Lifecycle.Event.ON_RESUME) {
                 hasUsagePermission = hasUsageStatsPermission(context)
                 canDrawOverlays = Settings.canDrawOverlays(context)
-                isServiceRunning = isServiceRunning(context, AppMonitoringService::class.java)
+                if (!skipNextResume) {
+                    isServiceRunning = isServiceRunning(context, AppMonitoringService::class.java)
+                } else {
+                    skipNextResume = false
+                }
                 val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
                 blockedAppAttempts = prefs.getInt("blocked_app_attempts", 0)
                 hasCameraPermission = ContextCompat.checkSelfPermission(
